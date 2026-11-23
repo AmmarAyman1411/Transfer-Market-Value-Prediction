@@ -9,8 +9,21 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 
 def load():
     import os
-    from registry import load_model
+    path = os.getenv("MODEL_PATH")
+    if path and os.path.exists(path):
+        import joblib
+        return joblib.load(path)
+    from registry import get_model_path, load_model
     version = os.getenv("MODEL_VERSION")
+    try:
+        p, _ = get_model_path(version)
+    except Exception:
+        p = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "lgbm_market_value.joblib")
+    if not os.path.exists(p):
+        raise FileNotFoundError(
+            "Model file not found. Set MODEL_URL secret in Streamlit or place "
+            "models/lgbm_market_value.joblib in the repo."
+        )
     bundle, _ = load_model(version)
     return bundle
 
