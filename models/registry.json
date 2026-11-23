@@ -1,0 +1,16 @@
+{
+  "latest": "v1",
+  "versions": {
+    "v1": {
+      "file": "lgbm_market_value.joblib",
+      "created": "2026-11-22",
+      "metrics": {
+        "r2": 0.9742,
+        "mae": 436121,
+        "medae": 84742,
+        "mape": 20.19
+      },
+      "description": "Tuned LightGBM on engineered features, time-based split"
+    }
+  }
+}
