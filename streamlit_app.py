@@ -33,9 +33,12 @@ except Exception:
     model_url = os.getenv("MODEL_URL")
 if not os.path.exists(MODEL_PATH) and model_url:
     os.makedirs("models", exist_ok=True)
-    with st.spinner("Downloading model..."):
+    with st.spinner("Downloading model (84MB)..."):
         urllib.request.urlretrieve(model_url, MODEL_PATH)
     st.success("Model downloaded.")
+elif not os.path.exists(MODEL_PATH):
+    st.error("Model not found. Set MODEL_URL in Streamlit secrets or commit the model file.")
+    st.stop()
 
 os.environ.setdefault("MODEL_PATH", MODEL_PATH)
 
