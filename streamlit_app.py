@@ -218,6 +218,7 @@ with tab_insights:
         ("assets/age_vs_value.png", "Market value by age bucket"),
         ("assets/position_boxplot.png", "Market value by position"),
         ("assets/top_leagues.png", "Top leagues by valuation records"),
+        ("assets/top_leagues_value.png", "Top leagues by average market value"),
         ("assets/feature_importance.png", "Top 15 feature importances"),
     ]
     for i, (path, caption) in enumerate(imgs):
