@@ -12,6 +12,13 @@ contract months remaining, cumulative appearances (matches/goals/assists/minutes
 recent 12-month form, transfer history (count, fees, max value), value history
 (prev/peak/days since), age curve, league tier, derived ratios.
 
+## Data Insights
+![Value distribution](assets/value_distribution.png)
+![Age vs value](assets/age_vs_value.png)
+![Position boxplot](assets/position_boxplot.png)
+![Top leagues](assets/top_leagues.png)
+![Feature importance](assets/feature_importance.png)
+
 Train/test split is time-based (train <2023, val 2023, test 2024+).
 
 ## Metrics (test, 2024+ valuations, tuned LightGBM)
