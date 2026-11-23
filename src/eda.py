@@ -50,7 +50,7 @@ plt.close(fig)
 # 4. Top leagues
 fig, ax = plt.subplots(figsize=(9, 5))
 top = df["league"].value_counts()
-top = top[top.index != "Unknown"].head(12)
+top = top[[str(x).lower() != "unknown" for x in top.index]].head(12)
 sns.barplot(x=top.values, y=top.index, ax=ax, palette="viridis")
 ax.set_title("Top Leagues by Valuation Records")
 ax.set_xlabel("Count")
