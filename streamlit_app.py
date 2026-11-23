@@ -127,6 +127,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+tab_pred, tab_insights = st.tabs(["🔮 Predict", "📊 Data Insights"])
+
 # ---------- Defaults ----------
 defaults = {
     "age": 24.0, "height": 180.0, "caps": 0.0, "goals": 0.0,
@@ -139,74 +141,90 @@ defaults = {
 for k, v in defaults.items():
     st.session_state.setdefault(k, v)
 
-# ---------- Example button ----------
-if st.button("✨ Load example (Bukayo Saka)", use_container_width=True):
-    st.session_state.update({
-        "age": 24.5, "height": 178.0, "caps": 54.0, "goals": 14.0,
-        "position": "Attack", "sub_position": "Right Winger", "foot": "left",
-        "country": "England", "league": "GB1", "contract_months": 51.7,
-        "cum_matches": 290.0, "cum_goals": 78.0, "cum_assists": 72.0,
-        "cum_minutes": 21857.0, "num_transfers": 4.0, "prev_value": 130000000.0,
-        "peak_so_far": 150000000.0, "days_since_prev": 90.0,
-        "player_highest_mv": 150000000.0,
-    })
-    st.rerun()
+# ---------- Predict tab ----------
+with tab_pred:
+    if st.button("✨ Load example (Bukayo Saka)", use_container_width=True):
+        st.session_state.update({
+            "age": 24.5, "height": 178.0, "caps": 54.0, "goals": 14.0,
+            "position": "Attack", "sub_position": "Right Winger", "foot": "left",
+            "country": "England", "league": "GB1", "contract_months": 51.7,
+            "cum_matches": 290.0, "cum_goals": 78.0, "cum_assists": 72.0,
+            "cum_minutes": 21857.0, "num_transfers": 4.0, "prev_value": 130000000.0,
+            "peak_so_far": 150000000.0, "days_since_prev": 90.0,
+            "player_highest_mv": 150000000.0,
+        })
+        st.rerun()
 
-# ---------- Inputs ----------
-st.markdown('<div class="card">', unsafe_allow_html=True)
-col1, col2 = st.columns(2)
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
 
-with col1:
-    st.markdown("#### Profile")
-    age = st.number_input("Age", min_value=15.0, max_value=45.0, key="age")
-    height = st.number_input("Height (cm)", min_value=150.0, max_value=210.0, key="height")
-    caps = st.number_input("International caps", min_value=0.0, key="caps")
-    goals = st.number_input("International goals", min_value=0.0, key="goals")
-    position = st.selectbox("Position", ["Attack", "Midfield", "Defender", "Goalkeeper"], key="position")
-    sub_position = st.text_input("Sub-position", key="sub_position")
-    foot = st.selectbox("Foot", ["right", "left", "both"], key="foot")
+    with col1:
+        st.markdown("#### Profile")
+        age = st.number_input("Age", min_value=15.0, max_value=45.0, key="age")
+        height = st.number_input("Height (cm)", min_value=150.0, max_value=210.0, key="height")
+        caps = st.number_input("International caps", min_value=0.0, key="caps")
+        goals = st.number_input("International goals", min_value=0.0, key="goals")
+        position = st.selectbox("Position", ["Attack", "Midfield", "Defender", "Goalkeeper"], key="position")
+        sub_position = st.text_input("Sub-position", key="sub_position")
+        foot = st.selectbox("Foot", ["right", "left", "both"], key="foot")
 
-with col2:
-    st.markdown("#### Context & history")
-    country = st.text_input("Country of citizenship", key="country")
-    league = st.text_input("League id", key="league")
-    contract_months = st.number_input("Contract months remaining", key="contract_months")
-    cum_matches = st.number_input("Cumulative matches", key="cum_matches")
-    cum_goals = st.number_input("Cumulative goals", key="cum_goals")
-    cum_assists = st.number_input("Cumulative assists", key="cum_assists")
-    cum_minutes = st.number_input("Cumulative minutes", key="cum_minutes")
-    num_transfers = st.number_input("Number of transfers", key="num_transfers")
-    prev_value = st.number_input("Previous market value (EUR)", key="prev_value")
-    peak_so_far = st.number_input("Peak market value so far (EUR)", key="peak_so_far")
-    days_since_prev = st.number_input("Days since previous valuation", key="days_since_prev")
-    player_highest_mv = st.number_input("Player highest market value (EUR)", key="player_highest_mv")
-st.markdown('</div>', unsafe_allow_html=True)
+    with col2:
+        st.markdown("#### Context & history")
+        country = st.text_input("Country of citizenship", key="country")
+        league = st.text_input("League id", key="league")
+        contract_months = st.number_input("Contract months remaining", key="contract_months")
+        cum_matches = st.number_input("Cumulative matches", key="cum_matches")
+        cum_goals = st.number_input("Cumulative goals", key="cum_goals")
+        cum_assists = st.number_input("Cumulative assists", key="cum_assists")
+        cum_minutes = st.number_input("Cumulative minutes", key="cum_minutes")
+        num_transfers = st.number_input("Number of transfers", key="num_transfers")
+        prev_value = st.number_input("Previous market value (EUR)", key="prev_value")
+        peak_so_far = st.number_input("Peak market value so far (EUR)", key="peak_so_far")
+        days_since_prev = st.number_input("Days since previous valuation", key="days_since_prev")
+        player_highest_mv = st.number_input("Player highest market value (EUR)", key="player_highest_mv")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# ---------- Predict ----------
-if st.button("🔮 Predict market value", use_container_width=True, type="primary"):
-    row = pd.DataFrame([{
-        "age": age, "height_in_cm": height, "international_caps": caps,
-        "international_goals": goals, "position": position,
-        "sub_position": sub_position, "foot": foot,
-        "country_of_citizenship": country, "league": league,
-        "contract_months": contract_months, "cum_matches": cum_matches,
-        "cum_goals": cum_goals, "cum_assists": cum_assists,
-        "cum_minutes": cum_minutes, "num_transfers": num_transfers,
-        "prev_value": prev_value, "peak_so_far": peak_so_far,
-        "days_since_prev": days_since_prev, "player_highest_mv": player_highest_mv,
-    }])
-    val = predict_df(row)[0]
-    st.markdown(f'<div class="result-box">EUR {val:,.0f}</div>', unsafe_allow_html=True)
+    if st.button("🔮 Predict market value", use_container_width=True, type="primary"):
+        row = pd.DataFrame([{
+            "age": age, "height_in_cm": height, "international_caps": caps,
+            "international_goals": goals, "position": position,
+            "sub_position": sub_position, "foot": foot,
+            "country_of_citizenship": country, "league": league,
+            "contract_months": contract_months, "cum_matches": cum_matches,
+            "cum_goals": cum_goals, "cum_assists": cum_assists,
+            "cum_minutes": cum_minutes, "num_transfers": num_transfers,
+            "prev_value": prev_value, "peak_so_far": peak_so_far,
+            "days_since_prev": days_since_prev, "player_highest_mv": player_highest_mv,
+        }])
+        val = predict_df(row)[0]
+        st.markdown(f'<div class="result-box">EUR {val:,.0f}</div>', unsafe_allow_html=True)
 
-# ---------- Info ----------
-with st.expander("ℹ️ How it works & limitations"):
-    st.markdown(
-        "- Trained on Transfermarkt historical valuations (2003–2026).\n"
-        "- Uses profile + league + contract + cumulative performance + value history.\n"
-        "- Test R²=0.975 (2024+ valuations) when history is provided.\n"
-        "- Cold-start (no history) is weaker (~R²=0.61).\n"
-        "- Market values are estimates, not actual transfer fees.\n"
-        "- Data frozen mid-2026; retrain for newer seasons."
-    )
+    with st.expander("ℹ️ How it works & limitations"):
+        st.markdown(
+            "- Trained on Transfermarkt historical valuations (2003–2026).\n"
+            "- Uses profile + league + contract + cumulative performance + value history.\n"
+            "- Test R²=0.975 (2024+ valuations) when history is provided.\n"
+            "- Cold-start (no history) is weaker (~R²=0.61).\n"
+            "- Market values are estimates, not actual transfer fees.\n"
+            "- Data frozen mid-2026; retrain for newer seasons."
+        )
+
+# ---------- Insights tab ----------
+with tab_insights:
+    st.markdown("### Data insights from the training set")
+    cols = st.columns(2)
+    imgs = [
+        ("assets/value_distribution.png", "Market value distribution (log scale)"),
+        ("assets/age_vs_value.png", "Market value by age bucket"),
+        ("assets/position_boxplot.png", "Market value by position"),
+        ("assets/top_leagues.png", "Top leagues by valuation records"),
+        ("assets/feature_importance.png", "Top 15 feature importances"),
+    ]
+    for i, (path, caption) in enumerate(imgs):
+        with cols[i % 2]:
+            if os.path.exists(path):
+                st.image(path, caption=caption, use_container_width=True)
+            else:
+                st.warning(f"Missing {path}. Run `python src/eda.py`.")
 
 st.caption("Model: tuned LightGBM on Transfermarkt data. Built with Streamlit.")
