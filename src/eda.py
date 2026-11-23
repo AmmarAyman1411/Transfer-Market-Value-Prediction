@@ -69,4 +69,14 @@ fig.tight_layout()
 fig.savefig(os.path.join(ASSETS, "feature_importance.png"), dpi=120)
 plt.close(fig)
 
+# 6. Top leagues by average market value
+fig, ax = plt.subplots(figsize=(9, 5))
+league_mv = df[df["league"] != "Unknown"].groupby("league")["market_value_in_eur"].mean().sort_values(ascending=False).head(12)
+sns.barplot(x=league_mv.values, y=league_mv.index, ax=ax, palette="magma")
+ax.set_title("Top Leagues by Average Market Value (EUR)")
+ax.set_xlabel("Mean market value (EUR)")
+fig.tight_layout()
+fig.savefig(os.path.join(ASSETS, "top_leagues_value.png"), dpi=120)
+plt.close(fig)
+
 print("Saved plots to", ASSETS)
