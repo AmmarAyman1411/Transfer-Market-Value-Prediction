@@ -17,6 +17,7 @@ recent 12-month form, transfer history (count, fees, max value), value history
 ![Age vs value](assets/age_vs_value.png)
 ![Position boxplot](assets/position_boxplot.png)
 ![Top leagues](assets/top_leagues.png)
+![Top leagues by value](assets/top_leagues_value.png)
 ![Feature importance](assets/feature_importance.png)
 
 Train/test split is time-based (train <2023, val 2023, test 2024+).
