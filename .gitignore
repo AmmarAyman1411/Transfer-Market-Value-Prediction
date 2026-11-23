@@ -1,5 +1,6 @@
 __pycache__/
 .pytest_cache/
+catboost_info/
 data/*.parquet
 models/*.joblib
 .env
