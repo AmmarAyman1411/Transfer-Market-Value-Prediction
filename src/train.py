@@ -21,7 +21,8 @@ NUM_COLS = ["age", "age_sq", "height_in_cm", "international_caps", "internationa
             "num_transfers", "sum_transfer_fee", "max_transfer_mv", "max_transfer_fee",
             "has_transfer", "top_league", "is_prime", "is_young",
             "has_international", "goals_per_cap",
-            "prev_value", "peak_so_far", "days_since_prev", "player_highest_mv"]
+            "prev_value", "peak_so_far", "days_since_prev", "player_highest_mv",
+            "log_prev_value", "log_peak_so_far", "prev_peak_ratio"]
 FEATURES = NUM_COLS + CAT_COLS
 
 
@@ -47,14 +48,14 @@ def main():
     print("train/val/test", len(X_train), len(X_val), len(X_test))
 
     model = lgb.LGBMRegressor(
-        n_estimators=5000,
-        learning_rate=0.01,
-        num_leaves=255,
-        min_child_samples=10,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        reg_alpha=0.05,
-        reg_lambda=0.05,
+        n_estimators=3000,
+        learning_rate=0.00941910455780081,
+        num_leaves=464,
+        min_child_samples=12,
+        subsample=0.7677353186469493,
+        colsample_bytree=0.6032117013417799,
+        reg_alpha=0.003142801325387677,
+        reg_lambda=0.001013552854225303,
         random_state=42,
         n_jobs=-1,
     )
