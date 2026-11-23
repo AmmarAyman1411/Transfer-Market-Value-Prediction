@@ -187,6 +187,9 @@ def build_training_dataset() -> pd.DataFrame:
     df["peak_so_far"] = pd.to_numeric(df["peak_so_far"], errors="coerce").fillna(0)
     df["days_since_prev"] = pd.to_numeric(df["days_since_prev"], errors="coerce").fillna(9999)
     df["player_highest_mv"] = pd.to_numeric(df["highest_market_value_in_eur"], errors="coerce").fillna(0)
+    df["log_prev_value"] = np.log1p(df["prev_value"])
+    df["log_peak_so_far"] = np.log1p(df["peak_so_far"])
+    df["prev_peak_ratio"] = df["prev_value"] / (df["peak_so_far"] + 1)
 
     df["contract_months"] = df["contract_months"].clip(-12, 120)
 
